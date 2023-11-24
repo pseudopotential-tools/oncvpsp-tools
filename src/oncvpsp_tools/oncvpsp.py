@@ -7,6 +7,7 @@ from typing import Any, Dict, Generic, Iterable, List, Optional, TypeVar, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
+
 from .utils import sanitize
 
 
@@ -39,6 +40,7 @@ class ONCVPSPList(UserList, Generic[T]):
     """Generic class for an entry in an ONCVPSP input file that contains multiple elements and emulates a list."""
 
     def __init__(self, data, print_length=False):
+        """Create an :class:`ONCVPSPList` object."""
         self.print_length = print_length
         super().__init__(data)
 
@@ -350,6 +352,7 @@ class ONCVPSPOutputDataList(UserList, Generic[T]):
     label: str
 
     def __init__(self, data, label: str = ""):
+        """Create an :class:`ONCVPSPOutputDataList` object."""
         super().__init__(data)
         self.label = label
 

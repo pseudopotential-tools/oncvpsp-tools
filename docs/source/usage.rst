@@ -1,4 +1,9 @@
 Usage
 =====
-.. automodule:: oncvpsp_tools.api
+
+.. autoclass:: oncvpsp_tools.ONCVPSPInput
     :members:
+
+.. autoclass:: oncvpsp_tools.ONCVPSPOutput
+    :members:
+
