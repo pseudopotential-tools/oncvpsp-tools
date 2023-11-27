@@ -4,7 +4,8 @@ Usage
 API
 ---
 
-`oncvpsp-tools` implements the contents of `oncvpsp.x` input and output files as Python dataclasses. These are documented below
+`oncvpsp-tools` implements the contents of `oncvpsp.x` input and output files as Python dataclasses. These are
+documented below
 
 .. autoclass:: oncvpsp_tools.input.ONCVPSPInput
     :members:

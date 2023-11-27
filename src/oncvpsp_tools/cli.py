@@ -14,9 +14,9 @@ later, but that will cause problems--the code will get executed twice:
 """
 
 import logging
-import matplotlib.pyplot as plt
 
 import click
+import matplotlib.pyplot as plt
 
 __all__ = [
     "main",
@@ -34,29 +34,38 @@ def main():
 if __name__ == "__main__":
     main()
 
-valid_toplots = ["arctan_log_derivatives", "charge_densities", "energy_error",
-                 "local_pseudopotential", "projectors", "semilocal_ion_pseudopotentials",
-                 "wavefunctions"]
+valid_toplots = [
+    "arctan_log_derivatives",
+    "charge_densities",
+    "energy_error",
+    "local_pseudopotential",
+    "projectors",
+    "semilocal_ion_pseudopotentials",
+    "wavefunctions",
+]
+
 
 @main.command()
 @click.argument("filename", type=click.Path(exists=True))
 @click.argument("toplot", type=click.Choice(["all"] + valid_toplots), default="all")
-@click.option( "--tofile", is_flag=True, default=False, help="Write to file instead of displaying onscreen")
+@click.option(
+    "--tofile", is_flag=True, default=False, help="Write to file instead of displaying onscreen"
+)
 def plot(filename, toplot, tofile):
-    """Plotting tools for oncvpsp_tools."""
-
+    """Plot the contents of the provided ONCVPSP output file."""
     if toplot == "all":
         toplot = valid_toplots
     else:
         toplot = [toplot]
 
     from oncvpsp_tools import ONCVPSPOutput
+
     out = ONCVPSPOutput.from_file(filename)
 
     for name in toplot:
         obj = getattr(out, name)
         obj.plot()
         if tofile:
-            plt.savefig(f'{filename}_{name}.png', format='png')
+            plt.savefig(f"{filename}_{name}.png", format="png")
         else:
             plt.show()

@@ -194,7 +194,9 @@ class ONCVPSPOutput:
         )
 
         # Local pseudopotential
-        local_pseudopotential = ONCVPSPOutputData.from_str(content, "!L", 1, 2, label="local pseudopotential")
+        local_pseudopotential = ONCVPSPOutputData.from_str(
+            content, "!L", 1, 2, label="local pseudopotential"
+        )
 
         # Charge densities
         cd_kwargs = [{"info": {"rho": rho}} for rho in ["C", "M", "V"]]
