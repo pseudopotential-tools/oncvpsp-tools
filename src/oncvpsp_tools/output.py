@@ -20,6 +20,7 @@ class ONCVPSPOutputData:
     x: np.ndarray
     y: np.ndarray
     xlabel: str = "radius ($a_0$)"
+    label: str = ""
     info: Dict[str, Any] = field(default_factory=dict)
 
     def plot(self, ax=None, **kwargs):
@@ -37,7 +38,8 @@ class ONCVPSPOutputData:
         ax.plot(self.x, self.y, **kwargs)
         ax.set_xlabel(self.xlabel)
         ax.set_xlim([self.x.min(), self.x.max()])
-        ax.legend()
+        if self.label:
+            ax.set_title(self.label)
         return ax
 
     @classmethod
@@ -93,6 +95,7 @@ class ONCVPSPOutputDataList(UserList, Generic[T]):
                         break
 
             ax = data.plot(ax, **specific_kwargs, **kwargs)
+        ax.legend()
         ax.set_title(self.label)
 
         # Set xlimits to the largest range of x values
@@ -191,7 +194,7 @@ class ONCVPSPOutput:
         )
 
         # Local pseudopotential
-        local_pseudopotential = ONCVPSPOutputData.from_str(content, "!L", 1, 2)
+        local_pseudopotential = ONCVPSPOutputData.from_str(content, "!L", 1, 2, label="local pseudopotential")
 
         # Charge densities
         cd_kwargs = [{"info": {"rho": rho}} for rho in ["C", "M", "V"]]
