@@ -145,8 +145,7 @@ class ONCVPSPOutputGrid(ONCVPSPEntry):
 class ONCVPSPInput:
     """Class for the contents of an ONCVPSP input file.
 
-    The :class:`ONCVPSPInput` class is a dataclass that helps a user interact with input files for ``oncvpsp.x``, which
-    can sometimes be found in the ``info`` block of ``UPF`` files.
+    The :class:`ONCVPSPInput` class is a dataclass that helps a user interact with input files for ``oncvpsp.x``.
 
     Typically, a user will create an :class:`ONCVPSPInput` object from an input file using the :meth:`from_file` method,
     as follows ::
