@@ -10,32 +10,23 @@
 
 <p align="center">
     <a href="https://github.com/pseudopotential-tools/oncvpsp-tools/actions/workflows/tests.yml">
-        <img alt="Tests" src="https://github.com/pseudopotential-tools/oncvpsp-tools/workflows/Tests/badge.svg"/>
-    </a>
+        <img alt="Tests" src="https://github.com/pseudopotential-tools/oncvpsp-tools/workflows/Tests/badge.svg"/></a>
     <a href="https://pypi.org/project/oncvpsp_tools">
-        <img alt="PyPI" src="https://img.shields.io/pypi/v/oncvpsp-tools"/>
-    </a>
+        <img alt="PyPI" src="https://img.shields.io/pypi/v/oncvpsp-tools"/></a>
     <a href="https://pypi.org/project/oncvpsp_tools">
-        <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/oncvpsp-tools"/>
-    </a>
+        <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/oncvpsp-tools"/></a>
     <a href="https://github.com/pseudopotential-tools/oncvpsp-tools/blob/main/LICENSE">
-        <img alt="PyPI - License" src="https://img.shields.io/pypi/l/oncvpsp-tools"/>
-    </a>
+        <img alt="PyPI - License" src="https://img.shields.io/pypi/l/oncvpsp-tools"/></a>
     <a href='https://oncvpsp_tools.readthedocs.io/en/latest/?badge=latest'>
-        <img src='https://readthedocs.org/projects/oncvpsp_tools/badge/?version=latest' alt='Documentation Status'/>
-    </a>
+        <img src='https://readthedocs.org/projects/oncvpsp_tools/badge/?version=latest' alt='Documentation Status'/></a>
     <a href="https://codecov.io/gh/pseudopotential-tools/oncvpsp-tools/branch/main">
-        <img src="https://codecov.io/gh/pseudopotential-tools/oncvpsp-tools/branch/main/graph/badge.svg" alt="Codecov status"/>
-    </a>  
+        <img src="https://codecov.io/gh/pseudopotential-tools/oncvpsp-tools/branch/main/graph/badge.svg" alt="Codecov status"/></a>  
     <a href="https://github.com/cthoyt/cookiecutter-python-package">
-        <img alt="Cookiecutter template from @cthoyt" src="https://img.shields.io/badge/Cookiecutter-snekpack-blue"/> 
-    </a>
+        <img alt="Cookiecutter template from @cthoyt" src="https://img.shields.io/badge/Cookiecutter-snekpack-blue"/></a>
     <a href='https://github.com/psf/black'>
-        <img src='https://img.shields.io/badge/code%20style-black-000000.svg' alt='Code style: black'/>
-    </a>
+        <img src='https://img.shields.io/badge/code%20style-black-000000.svg' alt='Code style: black'/></a>
     <a href="https://github.com/pseudopotential-tools/oncvpsp-tools/blob/main/.github/CODE_OF_CONDUCT.md">
-        <img src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" alt="Contributor Covenant"/>
-    </a>
+        <img src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" alt="Contributor Covenant"/></a>
 </p>
 
 Tools for handling input and output files of ``oncvpsp.x``
