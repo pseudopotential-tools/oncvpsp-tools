@@ -38,24 +38,38 @@
     </a>
 </p>
 
-Tools for handling input and output files of oncvpsp.x
+Tools for handling input and output files of ``oncvpsp.x``
 
 ## 💪 Getting Started
 
-> TODO show in a very small amount of space the **MOST** useful thing your package can do.
-> Make it as short as possible! You have an entire set of docs for later.
+``oncvpsp-tools`` allows you to inspect input files
+
+```python
+from upf_tools import ONCVPSPInput
+inp = ONCVPSPInput.from_file('/path/to/file')
+print(inp.reference_configuration)
+```
+
+and output files
+
+```python
+import matplotlib.pyplot as plt
+from upf_tools import ONCVPSPOutput
+out = ONCVPSPOutput.from_file('/path/to/file')
+out.arctan_log_derivatives.plot()
+plt.show()
+```
 
 ### Command Line Interface
 
-The oncvpsp_tools command line tool is automatically installed. It can
-be used from the shell with the `--help` flag to show all subcommands:
+The ``oncvpsp-tools`` command line interface is automatically installed, and allows the
+user to quickly plot the contents of `oncvpsp.x` output files. For example
 
 ```shell
-oncvpsp_tools --help
+oncvpsp-tools plot /path/to/file
 ```
 
-> TODO show the most useful thing the CLI does! The CLI will have documentation auto-generated
-> by `sphinx`.
+Use the `--help` flag to explore all the possible options.
 
 ## 🚀 Installation
 
