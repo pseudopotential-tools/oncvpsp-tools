@@ -13,10 +13,10 @@
         <img alt="Tests" src="https://github.com/pseudopotential-tools/oncvpsp-tools/workflows/Tests/badge.svg" />
     </a>
     <a href="https://pypi.org/project/oncvpsp_tools">
-        <img alt="PyPI" src="https://img.shields.io/pypi/v/oncvpsp_tools" />
+        <img alt="PyPI" src="https://img.shields.io/pypi/v/oncvpsp-tools" />
     </a>
     <a href="https://pypi.org/project/oncvpsp_tools">
-        <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/oncvpsp_tools" />
+        <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/oncvpsp-tools" />
     </a>
     <a href="https://github.com/pseudopotential-tools/oncvpsp-tools/blob/main/LICENSE">
         <img alt="PyPI - License" src="https://img.shields.io/pypi/l/oncvpsp-tools" />
