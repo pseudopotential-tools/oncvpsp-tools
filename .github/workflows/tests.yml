@@ -72,7 +72,9 @@ jobs:
         run:
           tox run -e py
       - name: Upload coverage report to codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
         if: success()
         with:
           file: coverage.xml
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
