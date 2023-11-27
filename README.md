@@ -19,7 +19,7 @@
         <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/oncvpsp_tools" />
     </a>
     <a href="https://github.com/pseudopotential-tools/oncvpsp-tools/blob/main/LICENSE">
-        <img alt="PyPI - License" src="https://img.shields.io/pypi/l/oncvpsp_tools" />
+        <img alt="PyPI - License" src="https://img.shields.io/pypi/l/oncvpsp-tools" />
     </a>
     <a href='https://oncvpsp_tools.readthedocs.io/en/latest/?badge=latest'>
         <img src='https://readthedocs.org/projects/oncvpsp_tools/badge/?version=latest' alt='Documentation Status' />
