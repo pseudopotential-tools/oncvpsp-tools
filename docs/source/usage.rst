@@ -18,6 +18,6 @@ CLI
 
 ``oncvpsp-tools`` provides a command-line interface for plotting the contents of an ONCVPSP output file. For example::
 
-    oncvpsp_tools plot /path/to/file
+    oncvpsp-tools plot /path/to/file
 
-For more options, see ``oncvpsp_tools plot --help``
+For more options, see ``oncvpsp-tools plot --help``

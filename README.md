@@ -62,11 +62,11 @@ plt.show()
 
 ### Command Line Interface
 
-The oncvpsp_tools command line tool is automatically installed, and allows the
+The ``oncvpsp-tools`` command line interface is automatically installed, and allows the
 user to quickly plot the contents of `oncvpsp.x` output files. For example
 
 ```shell
-oncvpsp_tools plot /path/to/file
+oncvpsp-tools plot /path/to/file
 ```
 
 Use the `--help` flag to explore all the possible options.
