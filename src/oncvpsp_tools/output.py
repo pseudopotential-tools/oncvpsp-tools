@@ -131,8 +131,8 @@ class ONCVPSPOutput:
     """Class for the contents of an ``oncvpsp.x`` output file.
 
     The :class:`ONCVPSPOutput` class is a dataclass that helps a user interact with output files from ``oncvpsp.x``.
-    Typically, a user will not create a :class:`ONCVPSPOutput` object directly, but rather use the :meth:`from_file` as
-    follows::
+    Typically, a user will not create a :class:`ONCVPSPOutput` object directly, but rather use the class method
+    :meth:`from_file` as follows::
 
         from oncvpsp_tools import ONCVPSPOutput
         output = ONCVPSPOutput.from_file("path/to/output")
@@ -159,7 +159,7 @@ class ONCVPSPOutput:
     :type arctan_log_derivatives:   :class:`ONCVPSPOutputDataList`
     :param projectors: the projectors
     :type projectors:   :class:`ONCVPSPOutputDataList`
-    :param energy_error: the energy error per electron
+    :param energy_error: the energy error
     :type energy_error:   :class:`ONCVPSPOutputDataList`
     """
 
