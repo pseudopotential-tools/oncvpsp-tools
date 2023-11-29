@@ -35,31 +35,28 @@ T = TypeVar("T")
 class ONCVPSPList(UserList, Generic[T]):
     """Generic class for an entry in an ONCVPSP input file that contains multiple elements and emulates a list."""
 
-    def __init__(self, data, print_length=False):
+    def __init__(self, data):
         """Create an :class:`ONCVPSPList` object."""
-        self.print_length = print_length
         super().__init__(data)
 
     @property
     def columns(self) -> str:
         """Return the column headers for the list."""
-        if self.data:
+        if self.data and isinstance(self.data[0], ONCVPSPEntry):
             return self.data[0].columns
         else:
             return ""
 
-    @property
-    def content(self) -> str:
-        """Return the content of the list."""
-        out = ""
-        if self.print_length:
-            out = f"{len(self): >8}\n"
-        out += "\n".join([d.content for d in self.data])
-        return out
-
-    def to_str(self) -> str:
+    def to_str(self, print_length=False) -> str:
         """Return the text representation of the list."""
-        return f"{self.columns}\n{self.content}"
+        out = []
+        if print_length:
+            out.append(f"{len(self): >8}")
+        out.append(self.columns)
+        out += [
+            d.to_str(print_length) if isinstance(d, ONCVPSPList) else d.content for d in self.data
+        ]
+        return "\n".join(out)
 
 
 @dataclass(repr=False)
@@ -269,7 +266,6 @@ class ONCVPSPInput:
                         ONCVPSPConfigurationSubshell(*[sanitize(v) for v in line.split()])
                         for line in content[istart:iend]
                     ],
-                    print_length=True,
                 )
             )
 
@@ -309,10 +305,9 @@ class ONCVPSPInput:
                 self.output_grid.to_str(),
                 "# TEST CONFIGURATIONS",
                 "# ncnf",
-                f"{len(self.test_configurations): >8}",
-                self.test_configurations.to_str(),
+                self.test_configurations.to_str(print_length=True),
             ]
-        )
+        ).replace("\n\n", "\n")
 
     def to_file(self, filename: str):
         """Write the ONCVPSP input file to disk."""
