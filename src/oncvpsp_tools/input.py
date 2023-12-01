@@ -275,14 +275,6 @@ class ONCVPSPInput:
                 )
             )
 
-<<<<<<< Updated upstream
-=======
-        if len(content) > iend:
-            opt_args = [ONCVPSPConfiningPotential(*[sanitize(v) for v in content[iend].split()])]
-        else:
-            opt_args = []
-
->>>>>>> Stashed changes
         return cls(
             atom,
             reference_configuration,
@@ -294,10 +286,6 @@ class ONCVPSPInput:
             log_derivative_analysis,
             output_grid,
             test_configs,
-<<<<<<< Updated upstream
-=======
-            *opt_args
->>>>>>> Stashed changes
         )
 
     def to_str(self) -> str:
