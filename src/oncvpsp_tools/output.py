@@ -183,8 +183,10 @@ class ONCVPSPOutput:
         if at_ref_str in splitcontent:
             istart = splitcontent.index(at_ref_str)
         else:
-            raise ValueError('The atom and reference configuration information is missing from this output; this '
-                             'suggests that it came from a failed oncvpsp.x calculation')
+            raise ValueError(
+                "The atom and reference configuration information is missing from this output; this "
+                "suggests that it came from a failed oncvpsp.x calculation"
+            )
         input = ONCVPSPInput.from_str("\n".join(splitcontent[istart:]))
 
         # Semilocal ion pseudopotentials
@@ -287,11 +289,11 @@ class ONCVPSPOutput:
             content = f.read()
 
         return cls.from_str(content)
-    
+
     def to_str(self) -> str:
         """Return the contents of the ONCVPSP output file."""
         return self.content
-    
+
     def to_file(self, filename: str) -> None:
         """Write the contents of the ONCVPSP output file to a file."""
         with open(filename, "w") as f:
