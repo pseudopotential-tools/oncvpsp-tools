@@ -3,6 +3,7 @@
 from collections import UserList
 from dataclasses import dataclass
 from typing import Generic, Optional, TypeVar
+import subprocess
 
 from .utils import sanitize
 
@@ -202,7 +203,7 @@ class ONCVPSPInput:
         """Create an :class:`ONCVPSPInput` object from a string."""
         lines = [line.strip() for line in txt.split("\n")]
 
-        content = [line for line in lines if not line.startswith("#")]
+        content = [line for line in lines if not line.startswith("#") and line]
 
         # atom
         atom = ONCVPSPAtom(*[sanitize(v) for v in content[0].split()])
@@ -261,8 +262,9 @@ class ONCVPSPInput:
         iend += 1
         test_configs: ONCVPSPList[ONCVPSPList[ONCVPSPConfigurationSubshell]] = ONCVPSPList([])
         for _ in range(ncvf):
+            nv = int(content[iend])
             istart = iend + 1
-            iend = istart + atom.nv
+            iend = istart + nv
             test_configs.append(
                 ONCVPSPList(
                     [
@@ -273,6 +275,14 @@ class ONCVPSPInput:
                 )
             )
 
+<<<<<<< Updated upstream
+=======
+        if len(content) > iend:
+            opt_args = [ONCVPSPConfiningPotential(*[sanitize(v) for v in content[iend].split()])]
+        else:
+            opt_args = []
+
+>>>>>>> Stashed changes
         return cls(
             atom,
             reference_configuration,
@@ -284,6 +294,10 @@ class ONCVPSPInput:
             log_derivative_analysis,
             output_grid,
             test_configs,
+<<<<<<< Updated upstream
+=======
+            *opt_args
+>>>>>>> Stashed changes
         )
 
     def to_str(self) -> str:
@@ -318,3 +332,24 @@ class ONCVPSPInput:
         """Write the ONCVPSP input file to disk."""
         with open(filename, "w") as f:
             f.write(self.to_str())
+
+    def run(self, oncvpsp_command='oncvpso.x') -> 'ONCVPSPOutput':
+        """Run the ONCVPSP executable and return the output."""
+
+        from oncvpsp_tools.output import ONCVPSPOutput
+
+        # Write the input file
+        self.to_file('tmp.oncvpsp.in')
+
+        # Run oncvpsp.x
+        with open('tmp.oncvpsp.in', 'r') as input_file:
+            result = subprocess.run(oncvpsp_command, stdin=input_file, capture_output=True, shell=True, text=True)
+
+        # Parse and return the result
+        try:
+            return ONCVPSPOutput.from_str(result.stdout)
+        except:
+            output_file = 'tmp.oncvpsp.out'
+            with open(output_file, 'w') as f:
+                f.write(result.stdout)
+            raise ValueError(f'ONCVPSP failed; inspect the output ({output_file})')
