@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from oncvpsp_tools import ONCVPSPInput, ONCVPSPOutput
+from oncvpsp_tools import ONCVPSPInput
 
 oncv_directory = Path(__file__).parent / "oncvpsp"
 
@@ -172,10 +172,3 @@ def test_oncv_input_roundtrip(filename):
     oncv.to_file(filename.with_suffix(".rewritten.in"))
     oncv2 = ONCVPSPInput.from_file(filename.with_suffix(".rewritten.in"))
     assert oncv == oncv2
-
-
-@pytest.mark.parametrize("filename", oncv_directory.glob("*.out"))
-def test_oncv_output(filename):
-    """Test creating a :class:`ONCVPSPOutput` object from an ONCVPSP input file."""
-    oncvo = ONCVPSPOutput.from_file(filename)
-    oncvo.charge_densities.plot()

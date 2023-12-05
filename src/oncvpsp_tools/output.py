@@ -23,6 +23,18 @@ class ONCVPSPOutputData:
     label: str = ""
     info: Dict[str, Any] = field(default_factory=dict)
 
+    def __eq__(self, other):
+        """Check if two :class:`ONCVPSPOutputData` objects are equal."""
+        if not isinstance(other, ONCVPSPOutputData):
+            return False
+        return (
+            np.allclose(self.x, other.x)
+            and np.allclose(self.y, other.y)
+            and self.xlabel == other.xlabel
+            and self.label == other.label
+            and self.info == other.info
+        )
+
     def plot(self, ax=None, **kwargs):
         """Plot the data."""
         if ax is None:
