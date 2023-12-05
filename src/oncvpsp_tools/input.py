@@ -138,14 +138,6 @@ class ONCVPSPOutputGrid(ONCVPSPEntry):
     rlmax: float
     drl: float
 
-@dataclass(repr=False)
-class ONCVPSPConfiningPotential(ONCVPSPEntry):
-    """Class for the confining potential block in an ONCVPSP input file."""
-
-    depth: float
-    r: float
-    beta: float
-
 
 @dataclass
 class ONCVPSPInput:
@@ -182,8 +174,6 @@ class ONCVPSPInput:
     :type output_grid: :class:`ONCVPSPOutputGrid`
     :param test_configurations: The test configurations block of the input file
     :type test_configurations: :class:`ONCVPSPList[ONCVPSPList[ONCVPSPConfigurationSubshell]]`
-    :param confining_potential: The confining potential block of the input file
-    :type confining_potential: :class:`ONCVPSPConfiningPotential`
 
     """
 
@@ -197,7 +187,6 @@ class ONCVPSPInput:
     log_derivative_analysis: ONCVPSPLogDerivativeAnalysis
     output_grid: ONCVPSPOutputGrid
     test_configurations: ONCVPSPList[ONCVPSPList[ONCVPSPConfigurationSubshell]]
-    confining_potential: ONCVPSPConfiningPotential = ONCVPSPConfiningPotential(0.0, 0.0, 0.0)
 
     @classmethod
     def from_file(cls, filename: str):
@@ -282,11 +271,6 @@ class ONCVPSPInput:
                 )
             )
 
-        if len(content) > iend:
-            conf_pot = ONCVPSPConfiningPotential(*[sanitize(v) for v in content[iend].split()])
-        else:
-            conf_pot = None
-
         return cls(
             atom,
             reference_configuration,
@@ -298,7 +282,6 @@ class ONCVPSPInput:
             log_derivative_analysis,
             output_grid,
             test_configs,
-            conf_pot,
         )
 
     def to_str(self) -> str:
@@ -325,8 +308,6 @@ class ONCVPSPInput:
                 "# TEST CONFIGURATIONS",
                 "# ncnf",
                 self.test_configurations.to_str(print_length=True),
-                "# CONFINING POTENTIAL",
-                self.confining_potential.to_str(),
             ]
         ).replace("\n\n", "\n")
 

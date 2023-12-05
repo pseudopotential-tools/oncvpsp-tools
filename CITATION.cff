@@ -3,6 +3,6 @@ message: "If you use this software, please cite it as below."
 title: "oncvpsp-tools"
 authors:
   - name: "Edward Linscott"
-version: 0.0.1-dev
+version: 0.0.4-dev
 doi:
 url: "https://github.com/pseudopotential-tools/oncvpsp-tools"
