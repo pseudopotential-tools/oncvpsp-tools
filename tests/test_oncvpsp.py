@@ -5,13 +5,12 @@ from pathlib import Path
 import pytest
 
 from oncvpsp_tools import ONCVPSPInput, ONCVPSPOutput
-from oncvpsp_tools.utils import sanitize
 
 oncv_directory = Path(__file__).parent / "oncvpsp"
 
 
 def test_oncv_input_pedantic():
-    """A line-by-line test for Ge.oncv.in"""
+    """A line-by-line test for Ge.oncv.in."""
     inp = ONCVPSPInput.from_file(oncv_directory / "Ge.oncv.in")
 
     """
@@ -19,12 +18,12 @@ def test_oncv_input_pedantic():
     # atsym, z, nc, nv, iexc   psfile
         Ge  32.0   5   3   3   psp8
     """
-    assert inp.atom.atsym == 'Ge'
+    assert inp.atom.atsym == "Ge"
     assert inp.atom.z == 32.0
     assert inp.atom.nc == 5
     assert inp.atom.nv == 3
     assert inp.atom.iexc == 3
-    assert inp.atom.psfile == 'psp8'
+    assert inp.atom.psfile == "psp8"
 
     """
     Checking the configuration section
@@ -38,7 +37,16 @@ def test_oncv_input_pedantic():
         4    0    2.0
         4    1    2.0
     """
-    nlfs = [[1, 0, 2.0], [2, 0, 2.0], [2, 1, 6.0], [3, 0, 2.0], [3, 1, 6.0], [3, 2, 10.0], [4, 0, 2.0], [4, 1, 2.0]]
+    nlfs = [
+        [1, 0, 2.0],
+        [2, 0, 2.0],
+        [2, 1, 6.0],
+        [3, 0, 2.0],
+        [3, 1, 6.0],
+        [3, 2, 10.0],
+        [4, 0, 2.0],
+        [4, 1, 2.0],
+    ]
     for i, (n, l, f) in enumerate(nlfs):
         assert inp.reference_configuration[i].n == n
         assert inp.reference_configuration[i].l == l
@@ -58,7 +66,9 @@ def test_oncv_input_pedantic():
         1    2.60   -0.00    4    8    5.20
         2    2.00    0.00    4    9    8.40
     """
-    for i, values in enumerate([[0, 2.60, -0.00, 4, 8, 5.00], [1, 2.60, -0.00, 4, 8, 5.20], [2, 2.00, 0.00, 4, 9, 8.40]]):
+    for i, values in enumerate(
+        [[0, 2.60, -0.00, 4, 8, 5.00], [1, 2.60, -0.00, 4, 8, 5.20], [2, 2.00, 0.00, 4, 9, 8.40]]
+    ):
         assert inp.optimization[i].l == values[0]
         assert inp.optimization[i].rc == values[1]
         assert inp.optimization[i].ep == values[2]
@@ -140,10 +150,12 @@ def test_oncv_input_pedantic():
         4    2    1.00
     #
     """
-    reference_configs = [[[3, 2, 10.00], [4, 0, 1.00], [4, 1, 2.00]],
-                         [[3, 2, 10.00], [4, 0, 2.00], [4, 1, 1.00]],
-                         [[3, 2, 10.00], [4, 0, 1.00], [4, 1, 1.00]],
-                         [[3, 2, 10.00], [4, 0, 1.00], [4, 2, 1.00]]]
+    reference_configs = [
+        [[3, 2, 10.00], [4, 0, 1.00], [4, 1, 2.00]],
+        [[3, 2, 10.00], [4, 0, 2.00], [4, 1, 1.00]],
+        [[3, 2, 10.00], [4, 0, 1.00], [4, 1, 1.00]],
+        [[3, 2, 10.00], [4, 0, 1.00], [4, 2, 1.00]],
+    ]
     assert len(inp.test_configurations) == 4
     for config, reference_config in zip(inp.test_configurations, reference_configs):
         assert len(config) == len(reference_config)
