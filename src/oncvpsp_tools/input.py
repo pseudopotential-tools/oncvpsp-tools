@@ -1,5 +1,6 @@
 """Classes for handling ONCVPSP input files."""
 
+import subprocess
 from collections import UserList
 from dataclasses import dataclass
 from typing import Generic, Optional, TypeVar
@@ -35,31 +36,28 @@ T = TypeVar("T")
 class ONCVPSPList(UserList, Generic[T]):
     """Generic class for an entry in an ONCVPSP input file that contains multiple elements and emulates a list."""
 
-    def __init__(self, data, print_length=False):
+    def __init__(self, data):
         """Create an :class:`ONCVPSPList` object."""
-        self.print_length = print_length
         super().__init__(data)
 
     @property
     def columns(self) -> str:
         """Return the column headers for the list."""
-        if self.data:
+        if self.data and isinstance(self.data[0], ONCVPSPEntry):
             return self.data[0].columns
         else:
             return ""
 
-    @property
-    def content(self) -> str:
-        """Return the content of the list."""
-        out = ""
-        if self.print_length:
-            out = f"{len(self): >8}\n"
-        out += "\n".join([d.content for d in self.data])
-        return out
-
-    def to_str(self) -> str:
+    def to_str(self, print_length=False) -> str:
         """Return the text representation of the list."""
-        return f"{self.columns}\n{self.content}"
+        out = []
+        if print_length:
+            out.append(f"{len(self): >8}")
+        out.append(self.columns)
+        out += [
+            d.to_str(print_length) if isinstance(d, ONCVPSPList) else d.content for d in self.data
+        ]
+        return "\n".join(out)
 
 
 @dataclass(repr=False)
@@ -202,7 +200,7 @@ class ONCVPSPInput:
         """Create an :class:`ONCVPSPInput` object from a string."""
         lines = [line.strip() for line in txt.split("\n")]
 
-        content = [line for line in lines if not line.startswith("#")]
+        content = [line for line in lines if not line.startswith("#") and line]
 
         # atom
         atom = ONCVPSPAtom(*[sanitize(v) for v in content[0].split()])
@@ -261,15 +259,15 @@ class ONCVPSPInput:
         iend += 1
         test_configs: ONCVPSPList[ONCVPSPList[ONCVPSPConfigurationSubshell]] = ONCVPSPList([])
         for _ in range(ncvf):
+            nv = int(content[iend])
             istart = iend + 1
-            iend = istart + atom.nv
+            iend = istart + nv
             test_configs.append(
                 ONCVPSPList(
                     [
                         ONCVPSPConfigurationSubshell(*[sanitize(v) for v in line.split()])
                         for line in content[istart:iend]
                     ],
-                    print_length=True,
                 )
             )
 
@@ -309,12 +307,33 @@ class ONCVPSPInput:
                 self.output_grid.to_str(),
                 "# TEST CONFIGURATIONS",
                 "# ncnf",
-                f"{len(self.test_configurations): >8}",
-                self.test_configurations.to_str(),
+                self.test_configurations.to_str(print_length=True),
             ]
-        )
+        ).replace("\n\n", "\n")
 
     def to_file(self, filename: str):
         """Write the ONCVPSP input file to disk."""
         with open(filename, "w") as f:
             f.write(self.to_str())
+
+    def run(self, oncvpsp_command="oncvpso.x"):
+        """Run the ONCVPSP executable and return the output."""
+        from oncvpsp_tools.output import ONCVPSPOutput
+
+        # Write the input file
+        self.to_file("tmp.oncvpsp.in")
+
+        # Run oncvpsp.x
+        with open("tmp.oncvpsp.in", "r") as input_file:
+            result = subprocess.run(
+                oncvpsp_command, stdin=input_file, capture_output=True, shell=True, text=True
+            )
+
+        # Parse and return the result
+        try:
+            return ONCVPSPOutput.from_str(result.stdout)
+        except Exception:
+            output_file = "tmp.oncvpsp.out"
+            with open(output_file, "w") as f:
+                f.write(result.stdout)
+            raise ValueError(f"ONCVPSP failed; inspect the output ({output_file})")
