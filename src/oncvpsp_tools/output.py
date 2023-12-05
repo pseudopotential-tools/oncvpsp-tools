@@ -23,6 +23,18 @@ class ONCVPSPOutputData:
     label: str = ""
     info: Dict[str, Any] = field(default_factory=dict)
 
+    def __eq__(self, other):
+        """Check if two :class:`ONCVPSPOutputData` objects are equal."""
+        if not isinstance(other, ONCVPSPOutputData):
+            return False
+        return (
+            np.allclose(self.x, other.x)
+            and np.allclose(self.y, other.y)
+            and self.xlabel == other.xlabel
+            and self.label == other.label
+            and self.info == other.info
+        )
+
     def plot(self, ax=None, **kwargs):
         """Plot the data."""
         if ax is None:
@@ -179,7 +191,14 @@ class ONCVPSPOutput:
         splitcontent = content.split("\n")
 
         # ONCVPSP input
-        istart = splitcontent.index("# ATOM AND REFERENCE CONFIGURATION")
+        at_ref_str = "# ATOM AND REFERENCE CONFIGURATION"
+        if at_ref_str in splitcontent:
+            istart = splitcontent.index(at_ref_str)
+        else:
+            raise ValueError(
+                "The atom and reference configuration information is missing from this output; this "
+                "suggests that it came from a failed oncvpsp.x calculation"
+            )
         input = ONCVPSPInput.from_str("\n".join(splitcontent[istart:]))
 
         # Semilocal ion pseudopotentials
@@ -282,6 +301,15 @@ class ONCVPSPOutput:
             content = f.read()
 
         return cls.from_str(content)
+
+    def to_str(self) -> str:
+        """Return the contents of the ONCVPSP output file."""
+        return self.content
+
+    def to_file(self, filename: str) -> None:
+        """Write the contents of the ONCVPSP output file to a file."""
+        with open(filename, "w") as f:
+            f.write(self.to_str())
 
     def to_upf(self) -> str:
         """Return the UPF part of the ONCVPSP output file."""

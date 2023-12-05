@@ -36,7 +36,7 @@ Tools for handling input and output files of ``oncvpsp.x``
 ``oncvpsp-tools`` allows you to inspect input files
 
 ```python
-from upf_tools import ONCVPSPInput
+from oncvpsp_tools import ONCVPSPInput
 inp = ONCVPSPInput.from_file('/path/to/file')
 print(inp.reference_configuration)
 ```
@@ -45,10 +45,17 @@ and output files
 
 ```python
 import matplotlib.pyplot as plt
-from upf_tools import ONCVPSPOutput
+from oncvpsp_tools import ONCVPSPOutput
 out = ONCVPSPOutput.from_file('/path/to/file')
 out.arctan_log_derivatives.plot()
 plt.show()
+```
+
+and even run ``oncvpsp.x`` from within a ``Python`` shell
+
+```python
+inp = ONCVPSPInput.from_file('/path/to/file')
+out = inp.run('/path/to/oncvpsp.x')
 ```
 
 ### Command Line Interface
