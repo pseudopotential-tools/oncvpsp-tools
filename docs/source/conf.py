@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+"""Sphinx configuration for the oncvpsp-tools documentation."""
 #
 # Configuration file for the Sphinx documentation builder.
 #
@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.abspath("../../src"))
 # -- Project information -----------------------------------------------------
 
 project = "oncvpsp_tools"
-copyright = f"{date.today().year}, Edward Linscott"
+copyright = f"{date.today().year}, Edward Linscott"  # noqa: DTZ011
 author = "Edward Linscott"
 
 # The full version, including alpha/beta/rc tags.
@@ -31,13 +31,13 @@ release = "0.0.4-dev"
 
 # The short X.Y version.
 parsed_version = re.match(
-    "(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)(?:-(?P<release>[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+(?P<build>[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?",
+    r"(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)(?:-(?P<release>[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+(?P<build>[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?",
     release,
 )
-version = parsed_version.expand("\g<major>.\g<minor>.\g<patch>")
+version = parsed_version.expand(r"\g<major>.\g<minor>.\g<patch>")
 
 if parsed_version.group("release"):
-    tags.add("prerelease")
+    tags.add("prerelease")  # noqa: F821
 
 # -- General configuration ---------------------------------------------------
 

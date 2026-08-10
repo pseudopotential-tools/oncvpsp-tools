@@ -1,9 +1,10 @@
 """Classes for handling ONCVPSP output files."""
 
 from collections import UserList
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, Generic, Iterable, List, Optional, TypeVar, Union
+from typing import Any, Generic, TypeVar
 
 import numpy as np
 
@@ -20,7 +21,7 @@ class ONCVPSPOutputData:
     y: np.ndarray
     xlabel: str = "radius ($a_0$)"
     label: str = ""
-    info: Dict[str, Any] = field(default_factory=dict)
+    info: dict[str, Any] = field(default_factory=dict)
 
     def __eq__(self, other):
         """Check if two :class:`ONCVPSPOutputData` objects are equal."""
@@ -70,11 +71,11 @@ class ONCVPSPOutputData:
         return cls(x, y, **kwargs)
 
     @classmethod
-    def from_file(cls, filename: Union[Path, str], identifier: str, xcol: int, ycol: int, **kwargs):
+    def from_file(cls, filename: Path | str, identifier: str, xcol: int, ycol: int, **kwargs):
         """Create an :class:`ONCVPSPOutputData` object from a file."""
         filename = Path(filename)
 
-        with open(filename, "r") as f:
+        with open(filename) as f:
             lines = f.read()
 
         return cls.from_str(lines, identifier, xcol, ycol, **kwargs)
@@ -90,11 +91,11 @@ class ONCVPSPOutputDataList(UserList, Generic[T]):
         super().__init__(data)
         self.label = label
 
-    def plot(self, ax=None, kwargs_list: Optional[List[Dict[str, Any]]] = None, **kwargs):
+    def plot(self, ax=None, kwargs_list: list[dict[str, Any]] | None = None, **kwargs):
         """Plot all the data in the list."""
         if kwargs_list is None:
             kwargs_list = [{} for _ in self.data]
-        for i, (data, specific_kwargs) in enumerate(zip(self.data, kwargs_list)):
+        for i, (data, specific_kwargs) in enumerate(zip(self.data, kwargs_list, strict=False)):
             # Make the colors match for entries that only differ by info['kind']
             if ax and "color" not in specific_kwargs and "color" not in kwargs:
                 # Get the previous colors used and the matching info dictionaries
@@ -102,7 +103,7 @@ class ONCVPSPOutputDataList(UserList, Generic[T]):
                 infos = [{k: v for k, v in d.info.items() if k != "kind"} for d in self.data[:i]]
 
                 # Use the same color if the dictionaries match (ignoring the 'kind' key)
-                for info, color in zip(infos, colors):
+                for info, color in zip(infos, colors, strict=False):
                     if info == {k: v for k, v in data.info.items() if k != "kind"}:
                         specific_kwargs["color"] = color
                         break
@@ -124,7 +125,7 @@ class ONCVPSPOutputDataList(UserList, Generic[T]):
         identifiers,
         xcol: int,
         ycols: Iterable[int],
-        kwargs_list: Optional[List[Dict[str, Any]]] = None,
+        kwargs_list: list[dict[str, Any]] | None = None,
     ):
         """Create an :class:`ONCVPSPOutputDataList` object from a string."""
         if kwargs_list is None:
@@ -132,7 +133,7 @@ class ONCVPSPOutputDataList(UserList, Generic[T]):
         oncvlist = cls(
             [
                 ONCVPSPOutputData.from_str(string, identifier, xcol, ycol, **kwargs)
-                for identifier, ycol, kwargs in zip(identifiers, ycols, kwargs_list)
+                for identifier, ycol, kwargs in zip(identifiers, ycols, kwargs_list, strict=False)
             ]
         )
         oncvlist.label = label
@@ -143,16 +144,17 @@ class ONCVPSPOutputDataList(UserList, Generic[T]):
 class ONCVPSPOutput:
     """Class for the contents of an ``oncvpsp.x`` output file.
 
-    The :class:`ONCVPSPOutput` class is a dataclass that helps a user interact with output files from ``oncvpsp.x``.
-    Typically, a user will not create a :class:`ONCVPSPOutput` object directly, but rather use the class method
-    :meth:`from_file` as follows::
+    The :class:`ONCVPSPOutput` class is a dataclass that helps a user interact with output files
+    from ``oncvpsp.x``. Typically, a user will not create a :class:`ONCVPSPOutput` object
+    directly, but rather use the class method :meth:`from_file` as follows::
 
         from oncvpsp_tools import ONCVPSPOutput
+
         output = ONCVPSPOutput.from_file("path/to/output")
 
-    :class:`ONCVPSPOutput` objects -- being a :class:`dataclass` -- have the same attributes as the input parameters
-    (listed below). Use these to interact with the contents of the output file. For example, to plot the semilocal ion
-    pseudopotentials::
+    :class:`ONCVPSPOutput` objects -- being a :class:`dataclass` -- have the same attributes as
+    the input parameters (listed below). Use these to interact with the contents of the output
+    file. For example, to plot the semilocal ion pseudopotentials::
 
         output.semilocal_ion_pseudopotentials.plot()
 
@@ -197,8 +199,8 @@ class ONCVPSPOutput:
             istart = splitcontent.index(at_ref_str)
         else:
             raise ValueError(
-                "The atom and reference configuration information is missing from this output; this "
-                "suggests that it came from a failed oncvpsp.x calculation"
+                "The atom and reference configuration information is missing from this "
+                "output; this suggests that it came from a failed oncvpsp.x calculation"
             )
         input = ONCVPSPInput.from_str("\n".join(splitcontent[istart:]))
 
@@ -226,15 +228,7 @@ class ONCVPSPOutput:
 
         # Pseudo and real wavefunctions
         il_pairs = sorted(
-            list(
-                set(
-                    [
-                        line.strip().split()[1]
-                        for line in splitcontent
-                        if line.strip().startswith("&")
-                    ]
-                )
-            )
+            {line.strip().split()[1] for line in splitcontent if line.strip().startswith("&")}
         )
         kinds = ["full", "pseudo"]
         kwargs = [
@@ -298,7 +292,7 @@ class ONCVPSPOutput:
     @classmethod
     def from_file(cls, filename: str):
         """Create an :class:`ONCVPSPOutput` object from an ONCVPSP output file."""
-        with open(filename, "r") as f:
+        with open(filename) as f:
             content = f.read()
 
         return cls.from_str(content)

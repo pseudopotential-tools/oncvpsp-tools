@@ -157,9 +157,9 @@ def test_oncv_input_pedantic():
         [[3, 2, 10.00], [4, 0, 1.00], [4, 2, 1.00]],
     ]
     assert len(inp.test_configurations) == 4
-    for config, reference_config in zip(inp.test_configurations, reference_configs):
+    for config, reference_config in zip(inp.test_configurations, reference_configs, strict=False):
         assert len(config) == len(reference_config)
-        for subshell, (n, l, f) in zip(config, reference_config):
+        for subshell, (n, l, f) in zip(config, reference_config, strict=False):
             assert subshell.n == n
             assert subshell.l == l
             assert subshell.f == f
@@ -167,7 +167,7 @@ def test_oncv_input_pedantic():
 
 @pytest.mark.parametrize("filename", oncv_directory.glob("*.in"))
 def test_oncv_input_roundtrip(filename):
-    """Test creating a :class:`ONCVPSPInput` object from file, writing it back to disk, and reading it again."""
+    """Test writing a :class:`ONCVPSPInput` object to disk and reading it back in."""
     oncv = ONCVPSPInput.from_file(filename)
     oncv.to_file(filename.with_suffix(".rewritten.in"))
     oncv2 = ONCVPSPInput.from_file(filename.with_suffix(".rewritten.in"))

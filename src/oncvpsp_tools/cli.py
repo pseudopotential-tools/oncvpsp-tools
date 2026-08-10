@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
-
 """Command line interface for :mod:`oncvpsp_tools`.
 
-Why does this file exist, and why not put this in ``__main__``? You might be tempted to import things from ``__main__``
+Why does this file exist, and why not put this in ``__main__``? You might be tempted to import
+things from ``__main__``
 later, but that will cause problems--the code will get executed twice:
 
 - When you run ``python3 -m oncvpsp_tools`` python will execute``__main__.py`` as a script.
@@ -46,7 +45,7 @@ valid_toplots = [
 
 @main.command()
 @click.argument("filename", type=click.Path(exists=True))
-@click.argument("toplot", type=click.Choice(["all"] + valid_toplots), default="all")
+@click.argument("toplot", type=click.Choice(["all", *valid_toplots]), default="all")
 @click.option(
     "--tofile", is_flag=True, default=False, help="Write to file instead of displaying onscreen"
 )

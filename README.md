@@ -37,7 +37,8 @@ Tools for handling input and output files of ``oncvpsp.x``
 
 ```python
 from oncvpsp_tools import ONCVPSPInput
-inp = ONCVPSPInput.from_file('/path/to/file')
+
+inp = ONCVPSPInput.from_file("/path/to/file")
 print(inp.reference_configuration)
 ```
 
@@ -46,7 +47,8 @@ and output files
 ```python
 import matplotlib.pyplot as plt
 from oncvpsp_tools import ONCVPSPOutput
-out = ONCVPSPOutput.from_file('/path/to/file')
+
+out = ONCVPSPOutput.from_file("/path/to/file")
 out.arctan_log_derivatives.plot()
 plt.show()
 ```
@@ -54,8 +56,8 @@ plt.show()
 and even run ``oncvpsp.x`` from within a ``Python`` shell
 
 ```python
-inp = ONCVPSPInput.from_file('/path/to/file')
-out = inp.run('/path/to/oncvpsp.x')
+inp = ONCVPSPInput.from_file("/path/to/file")
+out = inp.run("/path/to/oncvpsp.x")
 ```
 
 ### Command Line Interface
