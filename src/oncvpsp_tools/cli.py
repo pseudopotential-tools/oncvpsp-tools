@@ -16,7 +16,6 @@ later, but that will cause problems--the code will get executed twice:
 import logging
 
 import click
-import matplotlib.pyplot as plt
 
 __all__ = [
     "main",
@@ -53,6 +52,8 @@ valid_toplots = [
 )
 def plot(filename, toplot, tofile):
     """Plot the contents of the provided ONCVPSP output file."""
+    import matplotlib.pyplot as plt
+
     if toplot == "all":
         toplot = valid_toplots
     else:

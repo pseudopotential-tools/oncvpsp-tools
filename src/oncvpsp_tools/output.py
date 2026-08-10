@@ -5,7 +5,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, Generic, Iterable, List, Optional, TypeVar, Union
 
-import matplotlib.pyplot as plt
 import numpy as np
 
 from .input import ONCVPSPInput
@@ -37,6 +36,8 @@ class ONCVPSPOutputData:
 
     def plot(self, ax=None, **kwargs):
         """Plot the data."""
+        import matplotlib.pyplot as plt
+
         if ax is None:
             _, ax = plt.subplots()
         if "label" not in kwargs:
