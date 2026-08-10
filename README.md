@@ -11,14 +11,14 @@
 <p align="center">
     <a href="https://github.com/pseudopotential-tools/oncvpsp-tools/actions/workflows/tests.yml">
         <img alt="Tests" src="https://github.com/pseudopotential-tools/oncvpsp-tools/workflows/Tests/badge.svg"/></a>
-    <a href="https://pypi.org/project/oncvpsp_tools">
+    <a href="https://pypi.org/project/oncvpsp-tools">
         <img alt="PyPI" src="https://img.shields.io/pypi/v/oncvpsp-tools"/></a>
-    <a href="https://pypi.org/project/oncvpsp_tools">
+    <a href="https://pypi.org/project/oncvpsp-tools">
         <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/oncvpsp-tools"/></a>
     <a href="https://github.com/pseudopotential-tools/oncvpsp-tools/blob/main/LICENSE">
         <img alt="PyPI - License" src="https://img.shields.io/pypi/l/oncvpsp-tools"/></a>
-    <a href='https://oncvpsp_tools.readthedocs.io/en/latest/?badge=latest'>
-        <img src='https://readthedocs.org/projects/oncvpsp_tools/badge/?version=latest' alt='Documentation Status'/></a>
+    <a href='https://oncvpsp-tools.readthedocs.io/en/latest/?badge=latest'>
+        <img src='https://readthedocs.org/projects/oncvpsp-tools/badge/?version=latest' alt='Documentation Status'/></a>
     <a href="https://codecov.io/gh/pseudopotential-tools/oncvpsp-tools/branch/main">
         <img src="https://codecov.io/gh/pseudopotential-tools/oncvpsp-tools/branch/main/graph/badge.svg" alt="Codecov status"/></a>  
     <a href="https://github.com/cthoyt/cookiecutter-python-package">
