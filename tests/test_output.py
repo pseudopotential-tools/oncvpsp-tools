@@ -18,7 +18,7 @@ def test_oncv_output(filename):
 
 @pytest.mark.parametrize("filename", oncv_directory.glob("*.out"))
 def test_oncv_output_roundtrip(filename):
-    """Test creating a :class:`ONCVPSPOutput` object from file, writing it back to disk, and reading it again."""
+    """Test writing a :class:`ONCVPSPOutput` object to disk and reading it back in."""
     oncvo = ONCVPSPOutput.from_file(filename)
     oncvo.to_file(filename.with_suffix(".rewritten.out"))
     oncvo2 = ONCVPSPOutput.from_file(filename.with_suffix(".rewritten.out"))

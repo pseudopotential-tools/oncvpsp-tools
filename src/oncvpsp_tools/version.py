@@ -1,17 +1,15 @@
-# -*- coding: utf-8 -*-
-
 """Version information for :mod:`oncvpsp_tools`.
 
 Run with ``python -m oncvpsp_tools.version``
 """
 
 import os
-from subprocess import CalledProcessError, check_output  # noqa: S404
+from subprocess import CalledProcessError, check_output
 
 __all__ = [
     "VERSION",
-    "get_version",
     "get_git_hash",
+    "get_version",
 ]
 
 VERSION = "0.0.4-dev"
@@ -21,7 +19,7 @@ def get_git_hash() -> str:
     """Get the :mod:`oncvpsp_tools` git hash."""
     with open(os.devnull, "w") as devnull:
         try:
-            ret = check_output(  # noqa: S603,S607
+            ret = check_output(
                 ["git", "rev-parse", "HEAD"],
                 cwd=os.path.dirname(__file__),
                 stderr=devnull,

@@ -3,7 +3,7 @@
 import subprocess
 from collections import UserList
 from dataclasses import dataclass
-from typing import Generic, Optional, TypeVar
+from typing import Generic, TypeVar
 
 from .utils import sanitize
 
@@ -14,12 +14,12 @@ class ONCVPSPEntry:
     @property
     def columns(self) -> str:
         """Return the column headers for the entry."""
-        return "# " + " ".join([f"{str(k): >8}" for k in self.__dict__.keys()])[2:]
+        return "# " + " ".join([f"{k!s: >8}" for k in self.__dict__])[2:]
 
     @property
     def content(self) -> str:
         """Return the content of the entry."""
-        return " ".join([f"{str(v): >8}" for v in self.__dict__.values() if v is not None])
+        return " ".join([f"{v!s: >8}" for v in self.__dict__.values() if v is not None])
 
     def to_str(self) -> str:
         """Return the text representation of the entry."""
@@ -34,7 +34,7 @@ T = TypeVar("T")
 
 
 class ONCVPSPList(UserList, Generic[T]):
-    """Generic class for an entry in an ONCVPSP input file that contains multiple elements and emulates a list."""
+    """Generic class for a multi-element, list-like entry in an ONCVPSP input file."""
 
     def __init__(self, data):
         """Create an :class:`ONCVPSPList` object."""
@@ -119,7 +119,7 @@ class ONCVPSPModelCoreCharge(ONCVPSPEntry):
 
     icmod: int
     fcfact: float
-    rcfact: Optional[float] = None
+    rcfact: float | None = None
 
 
 @dataclass(repr=False)
@@ -143,16 +143,18 @@ class ONCVPSPOutputGrid(ONCVPSPEntry):
 class ONCVPSPInput:
     """Class for the contents of an ONCVPSP input file.
 
-    The :class:`ONCVPSPInput` class is a dataclass that helps a user interact with input files for ``oncvpsp.x``.
+    The :class:`ONCVPSPInput` class is a dataclass that helps a user interact with input files
+    for ``oncvpsp.x``.
 
-    Typically, a user will create an :class:`ONCVPSPInput` object from an input file using the :meth:`from_file` method,
-    as follows ::
+    Typically, a user will create an :class:`ONCVPSPInput` object from an input file using the
+    :meth:`from_file` method, as follows ::
 
         from oncvpsp_tools import ONCVPSPInput
+
         inp = ONCVPSPInput.from_file("path/to/input.in")
 
-    :class:`ONCVPSPInput` objects -- being a :class:`dataclass` -- have the same attributes as the input parameters
-    (listed below). Use these to interact with the contents of the input file.
+    :class:`ONCVPSPInput` objects -- being a :class:`dataclass` -- have the same attributes as
+    the input parameters (listed below). Use these to interact with the contents of the input file.
 
     :param atom: The atom block of the input file
     :type atom: :class:`ONCVPSPAtom`
@@ -191,7 +193,7 @@ class ONCVPSPInput:
     @classmethod
     def from_file(cls, filename: str):
         """Create an :class:`ONCVPSPInput` object from an ONCVPSP input file."""
-        with open(filename, "r") as f:
+        with open(filename) as f:
             txt = f.read()
         return cls.from_str(txt)
 
@@ -324,16 +326,18 @@ class ONCVPSPInput:
         self.to_file("tmp.oncvpsp.in")
 
         # Run oncvpsp.x
-        with open("tmp.oncvpsp.in", "r") as input_file:
-            result = subprocess.run(
+        with open("tmp.oncvpsp.in") as input_file:
+            result = subprocess.run(  # noqa: S602, PLW1510
                 oncvpsp_command, stdin=input_file, capture_output=True, shell=True, text=True
             )
 
         # Parse and return the result
         try:
             return ONCVPSPOutput.from_str(result.stdout)
-        except Exception:
+        except Exception:  # noqa: BLE001
             output_file = "tmp.oncvpsp.out"
             with open(output_file, "w") as f:
                 f.write(result.stdout)
-            raise ValueError(f"ONCVPSP failed; inspect the output ({output_file})")
+            raise ValueError(  # noqa: B904
+                f"ONCVPSP failed; inspect the output ({output_file})"
+            )
