@@ -71,14 +71,12 @@ Use the `--help` flag to explore all the possible options.
 
 ## 🚀 Installation
 
-<!-- Uncomment this section after your first ``tox -e finish``
 The most recent release can be installed from
 [PyPI](https://pypi.org/project/oncvpsp_tools/) with:
 
 ```shell
 pip install oncvpsp_tools
 ```
--->
 
 The most recent code and data can be installed directly from GitHub with:
 
