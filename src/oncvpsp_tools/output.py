@@ -243,9 +243,15 @@ class ONCVPSPOutput:
         )
 
         # Arctan log derivatives
+        r_values = {  # second line looks like this: atan(r * ((d psi(r)/dr)/psi(r))), r=
+            int(line.strip().split()[-1]): float(splitcontent[i+1].strip().split()[-1])
+            for i, line in enumerate(splitcontent)
+            if line.strip().startswith("log derivativve data for plotting, l=")
+        }
+        kinds = ["full", "pseudo"]
         identifiers = [f"!      {l}" for l in range(4) for kind in kinds]
         ycols = [kind_col for _ in range(4) for kind_col in [3, 4]]
-        kwargs = [{"info": {"kind": kind, "l": l}} for l in range(4) for kind in kinds]
+        kwargs = [{"info": {"kind": kind, "l": l, "r": r_values[l]}} for l in range(4) for kind in kinds]
         arctan_log_derivatives = ONCVPSPOutputDataList.from_str(
             "arctan log derivatives", content, identifiers, 2, ycols, kwargs
         )
